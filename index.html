@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>DQN Playground - train a deep Q-network on CartPole in your browser</title>
+<meta name="description" content="A real Deep Q-Network with experience replay and a target network, training on CartPole in TensorFlow.js. Watch the balance time climb, tune hyperparameters, run the trained agent.">
+<meta name="theme-color" content="#ffffff">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="./"><span class="brand-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16M4 12h16M8 8v8M12 6v12M16 9v6M20 11v2"/></svg></span><span>DQN Playground</span></a>
+    <nav class="site-nav">
+      <a class="nav-link" href="#lab">Lab</a>
+      <a class="nav-link" href="#watch">Watch</a>
+      <a class="nav-link" href="#limits">Limits</a>
+    </nav>
+    <div class="header-actions">
+      <button class="btn btn-ghost btn-icon" data-theme-toggle aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg></button>
+      <button class="btn btn-ghost btn-icon menu-btn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+  <section class="hero wrap rise" id="lab">
+    <span class="hero-eyebrow">Deep RL, running on your GPU tab</span>
+    <h1>Train a neural net to balance a pole</h1>
+    <p class="lede">A genuine Deep Q-Network - experience replay, target network, epsilon-greedy exploration - learning the classic CartPole control problem with TensorFlow.js, entirely in your browser. Tune the hyperparameters and watch balance time climb.</p>
+  </section>
+
+  <section class="wrap rise rise-1 mt16">
+    <div class="grid grid-2">
+      <div class="card card-pad-lg">
+        <h3 class="mb16">Hyperparameters</h3>
+        <div class="grid grid-2">
+          <div class="field"><label class="lbl">Episodes</label><input class="input" id="pEp" type="number" value="150" min="20" max="600"></div>
+          <div class="field"><label class="lbl">Learning rate</label><input class="input" id="pLr" type="number" value="0.001" step="0.0005" min="0.0001" max="0.01"></div>
+          <div class="field"><label class="lbl">Discount (gamma)</label><input class="input" id="pGamma" type="number" value="0.95" step="0.01" min="0.8" max="0.99"></div>
+          <div class="field"><label class="lbl">Replay batch</label><input class="input" id="pBatch" type="number" value="32" min="8" max="128"></div>
+          <div class="field"><label class="lbl">Hidden units</label><input class="input" id="pUnits" type="number" value="24" min="8" max="128"></div>
+          <div class="field"><label class="lbl">Target sync (episodes)</label><input class="input" id="pSync" type="number" value="5" min="1" max="50"></div>
+        </div>
+        <div class="row row-wrap mt16">
+          <button class="btn btn-primary" id="btnTrain">Train</button>
+          <button class="btn btn-ghost" id="btnWatch" disabled>Watch the trained agent</button>
+          <button class="btn btn-ghost btn-sm" id="btnReset">Reset</button>
+        </div>
+        <div class="grid grid-4 mt16" id="kpis"></div>
+      </div>
+      <div class="card" id="watch">
+        <div class="card-title">CartPole</div>
+        <div class="card-sub" id="simStatus">Train the agent, then watch it balance</div>
+        <div style="padding:12px"><canvas id="cv" width="520" height="300" style="width:100%;border-radius:12px;background:var(--accent-soft)"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap rise rise-2 mt24">
+    <div class="card"><div class="card-title">Balance time per episode</div><div class="card-sub">Steps survived (max 500) - a trained agent reaches the cap</div><div style="height:260px"><canvas id="chSteps"></canvas></div></div>
+  </section>
+
+  <section class="wrap rise rise-3 mt24 mb24" id="limits">
+    <div class="card card-pad-lg">
+      <h2 class="mb16">Honest limits</h2>
+      <ul class="cross-list">
+        <li>DQN is stochastic: some runs learn in 80 episodes, some need 300, some diverge. That instability is real deep RL, not a bug - reset and retrain, or lower the learning rate.</li>
+        <li>Training in a browser tab is slower than a GPU server; 150 episodes takes a few minutes.</li>
+        <li>CartPole is the "hello world" of control. Real problems need bigger networks and more machinery.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer"><div class="wrap">DQN Playground - TensorFlow.js, on-device, honestly stochastic</div></footer>
+<script src="vendor/tf.min.js"></script>
+<script src="vendor/chart.umd.min.js"></script>
+<script src="ui.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
